@@ -11,7 +11,7 @@ import homeassistant.helpers.config_validation as cv
 
 CONF_PANEL_MAC = 'panel_mac'
 
-REQUIREMENTS = ['crow', 'jsonpath==0.75']
+REQUIREMENTS = ['crow_security', 'jsonpath==0.75']
 
 _LOGGER = logging.getLogger(__name__)
 
@@ -29,9 +29,9 @@ CONFIG_SCHEMA = vol.Schema({
 
 
 async def async_setup(hass, config):
-    import crow
+    import crow_security
     global HUB
-    HUB = CrowHub(config[DOMAIN], crow)
+    HUB = CrowHub(config[DOMAIN], crow_security)
     if not HUB.login():
         return False
 
