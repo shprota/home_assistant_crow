@@ -98,5 +98,4 @@ class CrowSensor(Entity):
                              '$.%d.values.[?(@._id.dect_interface==%d)]',
                              self._device_id, self._interface_type)
         self.value = get_iface_value(self._interface_type, data)
-        _LOGGER.debug("Updated crow sensor value: %s", self.value)
 

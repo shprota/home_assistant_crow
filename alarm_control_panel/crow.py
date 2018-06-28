@@ -44,8 +44,8 @@ class CrowAlarm(alarm.AlarmControlPanel):
         """Initalize the Crow alarm panel."""
         self._area = area
         self._state = state_map.get(self._area.get('state'), STATE_UNKNOWN)
-        self._digits = 4  # hub.config.get(CONF_CODE_DIGITS)
-        self._changed_by = None
+        # self._digits = 4
+        # self._changed_by = None
 
     @property
     def name(self):
@@ -62,19 +62,13 @@ class CrowAlarm(alarm.AlarmControlPanel):
     #     """Return the code format as regex."""
     #     return '^\\d{%s}$' % self._digits
 
-    # @property
-    # def changed_by(self):
-    #     """Return the last change triggered by."""
-    #     return self._changed_by
-
     def update(self):
         """Update alarm status."""
-        _LOGGER.debug("Updating Crow area %s" % self._area.get('name'))
+        # _LOGGER.debug("Updating Crow area %s" % self._area.get('name'))
         self._area = hub.panel.get_area(self._area.get('id'))
         self._state = state_map.get(self._area.get('state'), STATE_UNKNOWN)
         if self._state == STATE_UNKNOWN:
             _LOGGER.error('Unknown alarm state %s', self._area.get('state'))
-        # self._changed_by = hub.get_first("$.armState.name")
 
     def alarm_disarm(self, code=None):
         """Send disarm command."""
