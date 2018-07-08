@@ -86,6 +86,9 @@ class CrowAlarm(alarm.AlarmControlPanel):
         _LOGGER.info('Crow alarm trigger')
         pass
 
+    def alarm_arm_custom_bypass(self, code=None):
+        _LOGGER.info('Crow alarm bypass')
+
     def _set_arm_state(self, state, code=None):
         """Send set arm state command."""
         _LOGGER.info('Crow set arm state %s', state)
