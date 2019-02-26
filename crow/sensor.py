@@ -9,7 +9,7 @@ import logging
 from homeassistant.core import callback
 from homeassistant.helpers.dispatcher import async_dispatcher_connect
 
-from custom_components.crow import HUB as hub, SIGNAL_CROW_UPDATE
+from custom_components.crow.__init__ import HUB as hub, SIGNAL_CROW_UPDATE
 from homeassistant.const import TEMP_CELSIUS
 from homeassistant.helpers.entity import Entity
 
@@ -90,6 +90,15 @@ class CrowSensor(Entity):
         self.value = get_iface_value(self._interface_type, msg.get('data', {}))
         _LOGGER.debug("Set %s value to %s", self._device_label, self.value)
         self.async_schedule_update_ha_state(True)
+
+    @property
+    def force_update(self):
+        """Return True if state updates should be forced.
+
+        If True, a state change will be triggered anytime the state property is
+        updated, not just when the value changes.
+        """
+        return True
 
     @property
     def should_poll(self):

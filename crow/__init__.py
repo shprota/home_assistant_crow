@@ -13,6 +13,10 @@ import homeassistant.helpers.config_validation as cv
 
 SIGNAL_CROW_UPDATE = "crow_update"
 CONF_PANEL_MAC = 'panel_mac'
+CONF_USE_ALARM = 'use_alarm'
+CONF_USE_SENSOR = 'use_sensor'
+CONF_USE_SWITCH = 'use_switch'
+CONF_USE_CAMERA = 'use_camera'
 
 REQUIREMENTS = ['crow_security', 'jsonpath==0.75']
 
@@ -27,6 +31,10 @@ CONFIG_SCHEMA = vol.Schema({
         vol.Required(CONF_PASSWORD): cv.string,
         vol.Required(CONF_USERNAME): cv.string,
         vol.Required(CONF_PANEL_MAC): cv.string,
+        vol.Optional(CONF_USE_ALARM): cv.boolean,
+        vol.Optional(CONF_USE_SENSOR): cv.boolean,
+        vol.Optional(CONF_USE_SWITCH): cv.boolean,
+        vol.Optional(CONF_USE_CAMERA): cv.boolean,
     }),
 }, extra=vol.ALLOW_EXTRA)
 
@@ -139,6 +147,9 @@ class CrowHub(object):
 
     async def ws_connect(self):
         async def ws_cb(msg):
+            # Skip boolshit
+            if msg.get('type') == 'info' and msg.get('data', {}).get('_id', {}).get('dect_interface') == 32768:
+                return
             _LOGGER.debug("Received message from Crow: %s", msg)
             async_dispatcher_send(self.hass, SIGNAL_CROW_UPDATE, msg)
 

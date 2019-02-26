@@ -4,14 +4,18 @@ import os
 
 from homeassistant.components.camera import Camera
 from homeassistant.const import EVENT_HOMEASSISTANT_STOP
-from custom_components.crow import HUB as hub
+from homeassistant.core import callback
+from homeassistant.helpers.dispatcher import async_dispatcher_connect
+
+from custom_components.crow.__init__ import HUB as hub, SIGNAL_CROW_UPDATE
+
 # from custom_components.crow import CONF_SMARTCAM
 
 _LOGGER = logging.getLogger(__name__)
 
 
 def setup_platform(hass, config, add_devices, discovery_info=None):
-    """Set up the Verisure Camera."""
+    """Set up the Crow Camera."""
     # if not int(hub.config.get(CONF_SMARTCAM, 1)):
     #     return False
     directory_path = hass.config.config_dir
@@ -42,9 +46,20 @@ class CrowSmartcam(Camera):
         hass.bus.listen_once(EVENT_HOMEASSISTANT_STOP,
                              self.delete_image)
 
+    async def async_added_to_hass(self):
+        """Subscribe to sensors events."""
+        async_dispatcher_connect(self.hass, SIGNAL_CROW_UPDATE, self.async_update_callback)
+        self.check_imagelist()
+
+    @callback
+    def async_update_callback(self, msg):
+        if msg.get('type') != 'event' and msg.get('data', {}).get('cid') != 5200:
+            return
+        self.check_imagelist()
+
     def camera_image(self):
         """Return image response."""
-        self.check_imagelist()
+        # self.check_imagelist()
         if not self._image_file:
             _LOGGER.debug("No image to display")
             return

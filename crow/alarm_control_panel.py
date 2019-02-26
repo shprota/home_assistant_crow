@@ -2,10 +2,12 @@
 Interfaces with Crow alarm control panel.
 """
 import logging
-from time import sleep
 
 import homeassistant.components.alarm_control_panel as alarm
-from custom_components.crow import HUB as hub
+from homeassistant.core import callback
+from homeassistant.helpers.dispatcher import async_dispatcher_connect
+
+from custom_components.crow.__init__ import HUB as hub, SIGNAL_CROW_UPDATE
 from homeassistant.const import (
     STATE_ALARM_ARMED_AWAY, STATE_ALARM_ARMED_HOME, STATE_ALARM_DISARMED, STATE_ALARM_ARMING,
     STATE_UNKNOWN)
@@ -47,6 +49,18 @@ class CrowAlarm(alarm.AlarmControlPanel):
         # self._digits = 4
         # self._changed_by = None
 
+    async def async_added_to_hass(self):
+        """Subscribe to sensors events."""
+        async_dispatcher_connect(self.hass, SIGNAL_CROW_UPDATE, self.async_update_callback)
+
+    @callback
+    def async_update_callback(self, msg):
+        if msg.get('type') != 'event':
+            return
+        cid = msg.get('data', {}).get('cid')
+
+
+
     @property
     def name(self):
         """Return the name of the device."""
@@ -84,7 +98,6 @@ class CrowAlarm(alarm.AlarmControlPanel):
 
     def alarm_trigger(self, code=None):
         _LOGGER.info('Crow alarm trigger')
-        pass
 
     def alarm_arm_custom_bypass(self, code=None):
         _LOGGER.info('Crow alarm bypass')
