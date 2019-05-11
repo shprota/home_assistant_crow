@@ -7,7 +7,7 @@ from homeassistant.const import EVENT_HOMEASSISTANT_STOP
 from homeassistant.core import callback
 from homeassistant.helpers.dispatcher import async_dispatcher_connect
 
-from custom_components.crow.__init__ import HUB as hub, SIGNAL_CROW_UPDATE
+from ..crow import HUB as hub, SIGNAL_CROW_UPDATE
 
 # from custom_components.crow import CONF_SMARTCAM
 

@@ -1,6 +1,6 @@
 import logging
 from time import time
-from custom_components.crow.__init__ import HUB as hub
+from ..crow import HUB as hub
 from homeassistant.components.switch import SwitchDevice
 _LOGGER = logging.getLogger(__name__)
 

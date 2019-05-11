@@ -7,7 +7,8 @@ import homeassistant.components.alarm_control_panel as alarm
 from homeassistant.core import callback
 from homeassistant.helpers.dispatcher import async_dispatcher_connect
 
-from custom_components.crow.__init__ import HUB as hub, SIGNAL_CROW_UPDATE
+from ..crow import HUB as hub, SIGNAL_CROW_UPDATE
+
 from homeassistant.const import (
     STATE_ALARM_ARMED_AWAY, STATE_ALARM_ARMED_HOME, STATE_ALARM_DISARMED, STATE_ALARM_ARMING,
     STATE_UNKNOWN)

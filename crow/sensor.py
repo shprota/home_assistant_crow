@@ -9,7 +9,7 @@ import logging
 from homeassistant.core import callback
 from homeassistant.helpers.dispatcher import async_dispatcher_connect
 
-from custom_components.crow.__init__ import HUB as hub, SIGNAL_CROW_UPDATE
+from ..crow import HUB as hub, SIGNAL_CROW_UPDATE
 from homeassistant.const import TEMP_CELSIUS
 from homeassistant.helpers.entity import Entity
 

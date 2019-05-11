@@ -13,7 +13,7 @@ import homeassistant.helpers.config_validation as cv
 
 SIGNAL_CROW_UPDATE = "crow_update"
 CONF_PANEL_MAC = 'panel_mac'
-CONF_USE_ALARM = 'use_alarm'
+CONF_USE_ALARM = 'use_alarm_control_panel'
 CONF_USE_SENSOR = 'use_sensor'
 CONF_USE_SWITCH = 'use_switch'
 CONF_USE_CAMERA = 'use_camera'
@@ -48,7 +48,8 @@ async def async_setup(hass, config):
     hass.loop.create_task(HUB.ws_connect())
 
     for component in ('alarm_control_panel', 'sensor', 'switch', 'camera'):
-        discovery.load_platform(hass, component, DOMAIN, {}, config)
+        if config[DOMAIN].get('use_' + component, True):
+            discovery.load_platform(hass, component, DOMAIN, {}, config)
     return True
 
 
