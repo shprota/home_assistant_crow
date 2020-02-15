@@ -2,16 +2,20 @@
 Interfaces with Crow alarm control panel.
 """
 import logging
+from time import sleep
 
 import homeassistant.components.alarm_control_panel as alarm
-from homeassistant.core import callback
-from homeassistant.helpers.dispatcher import async_dispatcher_connect
-
-from ..crow import HUB as hub, SIGNAL_CROW_UPDATE
-
+from custom_components.crow import HUB as hub
 from homeassistant.const import (
     STATE_ALARM_ARMED_AWAY, STATE_ALARM_ARMED_HOME, STATE_ALARM_DISARMED, STATE_ALARM_ARMING,
     STATE_UNKNOWN)
+
+from homeassistant.components.alarm_control_panel.const import (
+    SUPPORT_ALARM_ARM_AWAY,
+    SUPPORT_ALARM_ARM_HOME,
+    SUPPORT_ALARM_ARM_NIGHT,
+    SUPPORT_ALARM_TRIGGER,
+)
 
 _LOGGER = logging.getLogger(__name__)
 
@@ -50,18 +54,6 @@ class CrowAlarm(alarm.AlarmControlPanel):
         # self._digits = 4
         # self._changed_by = None
 
-    async def async_added_to_hass(self):
-        """Subscribe to sensors events."""
-        async_dispatcher_connect(self.hass, SIGNAL_CROW_UPDATE, self.async_update_callback)
-
-    @callback
-    def async_update_callback(self, msg):
-        if msg.get('type') != 'event':
-            return
-        cid = msg.get('data', {}).get('cid')
-
-
-
     @property
     def name(self):
         """Return the name of the device."""
@@ -99,9 +91,7 @@ class CrowAlarm(alarm.AlarmControlPanel):
 
     def alarm_trigger(self, code=None):
         _LOGGER.info('Crow alarm trigger')
-
-    def alarm_arm_custom_bypass(self, code=None):
-        _LOGGER.info('Crow alarm bypass')
+        pass
 
     def _set_arm_state(self, state, code=None):
         """Send set arm state command."""
@@ -109,3 +99,8 @@ class CrowAlarm(alarm.AlarmControlPanel):
         area = hub.panel.set_area_state(self._area.get('id'), set_state_map.get(state, "disarm"))
         if area:
             self._area = area
+
+    @property
+    def supported_features(self) -> int:
+        """Return the list of supported features."""
+        return SUPPORT_ALARM_ARM_HOME | SUPPORT_ALARM_ARM_AWAY | SUPPORT_ALARM_TRIGGER
