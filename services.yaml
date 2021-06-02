@@ -1,0 +1,7 @@
+capture_smartcam:
+  name: Capture Camera image
+  description: Capture a new image from a Crow Camera
+  target:
+    entity:
+      integration: crow
+      domain: camera

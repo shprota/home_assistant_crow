@@ -1,0 +1,23 @@
+{
+  "title": "Crow Security",
+  "config": {
+    "step": {
+      "user": {
+        "data": {
+          "description": "Sign-in with your Crow account.",
+          "panel_mac": "Panel MAC address",
+          "email": "Email",
+          "password": "Password"
+        }
+      }
+    },
+    "error": {
+      "invalid_auth": "Invalid authentication",
+      "unknown": "Unexpected error"
+    },
+    "abort": {
+      "already_configured": "Account is already configured",
+      "reauth_successful": "Re-authentication was successful"
+    }
+  }
+}
