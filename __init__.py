@@ -11,7 +11,7 @@ import homeassistant.helpers.config_validation as cv
 from homeassistant.components.alarm_control_panel import (
     DOMAIN as ALARM_CONTROL_PANEL_DOMAIN,
 )
-# from homeassistant.components.binary_sensor import DOMAIN as BINARY_SENSOR_DOMAIN
+from homeassistant.components.binary_sensor import DOMAIN as BINARY_SENSOR_DOMAIN
 from homeassistant.components.camera import DOMAIN as CAMERA_DOMAIN
 from homeassistant.components.sensor import DOMAIN as SENSOR_DOMAIN
 from homeassistant.components.switch import DOMAIN as SWITCH_DOMAIN
@@ -43,6 +43,7 @@ async def async_setup_entry(hass: HomeAssistant, config: ConfigEntry):
     crow_hub = CrowHub(config.data, hass)
     await crow_hub.init_panel()
     hass.data[DOMAIN] = crow_hub
-    hass.config_entries.async_setup_platforms(config, PLATFORMS)
+    # hass.config_entries.async_setup_platforms(config, PLATFORMS)
+    await hass.config_entries.async_forward_entry_setups(config, PLATFORMS)
     hass.loop.create_task(crow_hub.ws_connect())
     return True

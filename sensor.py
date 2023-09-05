@@ -11,7 +11,7 @@ from homeassistant.config_entries import ConfigEntry
 from homeassistant.const import TEMP_CELSIUS, PRESSURE_HPA, PERCENTAGE, CONCENTRATION_MICROGRAMS_PER_CUBIC_METER
 from homeassistant.core import HomeAssistant
 from homeassistant.helpers.entity import Entity
-from homeassistant.helpers.entity_platform import AddEntitiesCallback
+# from homeassistant.helpers.entity_platform import AddEntitiesCallback
 from .consts import (DOMAIN)
 
 _LOGGER = logging.getLogger(__name__)
@@ -90,7 +90,7 @@ def get_iface_unit(iface):
 async def async_setup_entry(
         hass: HomeAssistant,
         entry: ConfigEntry,
-        async_add_entities: AddEntitiesCallback,
+        async_add_entities,
 ):
     hub = hass.data[DOMAIN]
     measurements = await hub.get_measurements()

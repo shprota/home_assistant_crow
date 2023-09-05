@@ -5,10 +5,10 @@
   "domain": "crow",
   "name": "CROW Security",
   "requirements": [
-    "crow_security",
+    "crow-security==0.3.0",
     "jsonpath==0.75"
   ],
-  "version": "1.1",
+  "version": "1.2",
   "iot_class": "cloud_push",
   "config_flow": true
 }

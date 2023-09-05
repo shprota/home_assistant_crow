@@ -3,7 +3,7 @@ from time import time
 from homeassistant.components.switch import SwitchEntity
 from homeassistant.config_entries import ConfigEntry
 from homeassistant.core import HomeAssistant
-from homeassistant.helpers.entity_platform import AddEntitiesCallback
+# from homeassistant.helpers.entity_platform import AddEntitiesCallback
 from .consts import (DOMAIN)
 
 _LOGGER = logging.getLogger(__name__)
@@ -12,7 +12,7 @@ _LOGGER = logging.getLogger(__name__)
 async def async_setup_entry(
         hass: HomeAssistant,
         entry: ConfigEntry,
-        async_add_entities: AddEntitiesCallback,
+        async_add_entities,
 ):
     hub = hass.data[DOMAIN]
     outputs = await hub.get_outputs()

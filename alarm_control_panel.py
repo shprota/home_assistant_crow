@@ -15,7 +15,7 @@ from homeassistant.components.alarm_control_panel.const import (
     SUPPORT_ALARM_TRIGGER, SUPPORT_ALARM_ARM_CUSTOM_BYPASS,
 )
 from homeassistant.core import HomeAssistant
-from homeassistant.helpers.entity_platform import AddEntitiesCallback
+# from homeassistant.helpers.entity_platform import AddEntitiesCallback
 from .consts import (DOMAIN)
 import crow_security as crow
 
@@ -41,7 +41,7 @@ set_state_map = {
 async def async_setup_entry(
         hass: HomeAssistant,
         entry: ConfigEntry,
-        async_add_entities: AddEntitiesCallback,
+        async_add_entities,
 ):
     hub = hass.data[DOMAIN]
     alarms = []
@@ -80,8 +80,12 @@ class CrowAlarm(alarm.AlarmControlPanelEntity):
 
     async def async_update(self):
         """Update alarm status."""
+        tmp = await self._panel.get_area(self._area.get('id'))
+        _LOGGER.debug("Area type is %s" % type(tmp))
+        if tmp is not None and type(tmp) == dict:
+            self._area = tmp
         _LOGGER.debug("Updating Crow area %s" % self._area.get('name'))
-        self._area = await self._panel.get_area(self._area.get('id'))
+
         self._state = state_map.get(self._area.get('state'), STATE_UNKNOWN)
         if self._state == STATE_UNKNOWN:
             _LOGGER.error('Unknown alarm state %s', self._area.get('state'))
